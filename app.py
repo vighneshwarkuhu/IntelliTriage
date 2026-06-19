@@ -55,13 +55,10 @@ THRESHOLD = 0.60
 
 # 4. Decoupled Inference Core (Mock Deep Learning Engine)
 def predict_case(image, filename):
-    """
-    Simulated deep learning inference pipeline. Bypasses TensorFlow system dependencies
-    while generating structure-identical tensor probabilities for clinical UI testing.
-    """
-    # Seed generator based on filename length for consistent outputs per unique file
-    random.seed(len(filename))
-    
+    # Lock the random seed using a unique mathematical hash of the filename string
+    file_hash = sum(ord(char) for char in filename)
+    random.seed(file_hash)
+    np.random.seed(file_hash) # <-- ADD THIS LINE
     # Simulate hardware processing latency
     time.sleep(1.2)
     
